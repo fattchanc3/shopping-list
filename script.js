@@ -15,7 +15,7 @@ var input = document.getElementById("userinput");
 var ul = document.querySelector("ul");
 var list = document.getElementsByClassName("list");
 var del = "";
-// var lastid = parseInt(document.querySelector("li").getAttribute("random")); //23
+var lastid = parseInt(document.querySelector("li").getAttribute("random")); //23
 var strike = document.querySelectorAll("li");
 
 function inputLength() {
@@ -24,18 +24,26 @@ function inputLength() {
 
 function createListElement() {
 	var li = document.createElement("li");
-	var b = document.createElement("button");
+	// var b = createDeleteEle();
 	
 	li.appendChild(document.createTextNode(input.value));
-	// lastid += 1;
-	b.appendChild(document.createTextNode("delete")); // put into function
-	b.setAttribute("id", "delete"); // put into function
+	lastid += 1;
+	// b.appendChild(document.createTextNode("delete")); // put into function
+	// b.setAttribute("id", "delete"); // put into function
 	// b.setAttribute("random", lastid);	// put into function
-	// li.setAttribute("random", lastid);
-	li.appendChild(b);
+	li.setAttribute("random", lastid);
+	li.appendChild(createDeleteEle());
 	ul.appendChild(li);
 	
 	input.value = "";
+}
+
+function createDeleteEle () {
+	var b = document.createElement("button");
+	b.appendChild(document.createTextNode("delete")); // put into function
+	b.setAttribute("id", "delete"); // put into function
+
+	return b;
 }
 
 function addListAfterClick() {
@@ -60,11 +68,12 @@ function addListAfterKeypress(event) {
 //     // document.getElementById("delete").parentNode.parentNode.removeChild(d);
 // }
 
-function addDeleteButton() {
-	for (var i = 0; i < strike.length; i++) {
-  	strike[i].addEventListener("click", clickList);
+//listAddDeleteButton IIFE
+(function listAddDeleteButton() {
+	for (let i of strike) {
+		i.appendChild(createDeleteEle());
 	}
-}
+})();
 
 function testOnly() {
 	event.target.classList.toggle("done");
@@ -88,8 +97,8 @@ function clickList(event) {
 	}
 	if(event.target.id === "delete"){
     // let item = document.getElementById("delete").parentElement; // or parentNode
-    // event.currentTarget.removeChild(event.target.closest('li'));
     event.target.parentElement.remove();
+    // event.currentTarget.removeChild(event.target.closest('li'));
     // event.currentTarget.removeChild(item); //works
     // document.getElementById("delete").parentNode.parentNode.removeChild(d); //works
 	}
