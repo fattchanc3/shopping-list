@@ -11,7 +11,11 @@
 
 var button = document.getElementById("enter");
 var input = document.getElementById("userinput");
+// var del = document.getElementById("del");
 var ul = document.querySelector("ul");
+var list = document.getElementsByClassName("list");
+var del = "";
+// var lastid = parseInt(document.querySelector("li").getAttribute("random")); //23
 var strike = document.querySelectorAll("li");
 
 function inputLength() {
@@ -20,9 +24,17 @@ function inputLength() {
 
 function createListElement() {
 	var li = document.createElement("li");
-	li.addEventListener("click", clickList);
+	var b = document.createElement("button");
+	
 	li.appendChild(document.createTextNode(input.value));
+	// lastid += 1;
+	b.appendChild(document.createTextNode("delete")); // put into function
+	b.setAttribute("id", "delete"); // put into function
+	// b.setAttribute("random", lastid);	// put into function
+	// li.setAttribute("random", lastid);
+	li.appendChild(b);
 	ul.appendChild(li);
+	
 	input.value = "";
 }
 
@@ -35,32 +47,65 @@ function addListAfterClick() {
 function addListAfterKeypress(event) {
 	if (inputLength() > 0 && event.keyCode === 13) {
 		createListElement();
+
+	}
+}
+//try to make delete by random id
+// function deleteAfterClick() {
+// 		let item = document.getElementById("delete").getAttribute("random"); //id
+// 		if (document.querySelector("li").getAttribute("random") == item){
+// 				// el = document.querySelector("li");
+// 				el.remove();
+// 			}
+//     // document.getElementById("delete").parentNode.parentNode.removeChild(d);
+// }
+
+function addDeleteButton() {
+	for (var i = 0; i < strike.length; i++) {
+  	strike[i].addEventListener("click", clickList);
 	}
 }
 
-function clickList(event) {
-	strikeLen = strike.length;
+function testOnly() {
+	event.target.classList.toggle("done");
+}
 
-	// for(let i = 0; i<strikeLen; i++) {
-	// 	strike[i].classList.toggle("done");
-	// }
+function clickList(event) {
 
 	// if (event.target && event.target.matches("li.bold")) {
  //    event.target.classList.toggle("done"); // new class name here
+ //    event.currentTarget.className+= " done";
+ //    if (event.target.matches(".done"))
+ //    	event.target.classList.toggle("done");
  //    }
+ //    }
+
  // event.target.classList.toggle("done");
- event.currentTarget.classList.toggle("done");
+
+ 	// event.target, which is the element on which the event actually occurred
+	if(event.target.nodeName === "LI"){
+			event.target.classList.toggle("done");
+	}
+	if(event.target.id === "delete"){
+    // let item = document.getElementById("delete").parentElement; // or parentNode
+    // event.currentTarget.removeChild(event.target.closest('li'));
+    event.target.parentElement.remove();
+    // event.currentTarget.removeChild(item); //works
+    // document.getElementById("delete").parentNode.parentNode.removeChild(d); //works
+	}
+
+     //event.currentTarget, which is the element that is actually calling the listener (i.e. the on which the listener has been attached)
+ // event.currentTarget.classList.toggle("done");
 }
 
 button.addEventListener("click", addListAfterClick);
 
 input.addEventListener("keypress", addListAfterKeypress);
-
 // strike.addEventListener("click", clickList);
- for (var i = 0; i < strike.length; i++) {
-  strike[i].addEventListener("click", clickList);
-}
-// item[i].addEventListener("click", itemDone);
-// strike[x].classList.toggle("done");
-
+//  for (var i = 0; i < strike.length; i++) {
+//   strike[i].addEventListener("click", clickList);
+// }
+// document.body.addEventListener('click', clickList)
+ul.addEventListener('click', clickList);
+// b.addEventListener("click", deleteAfterClick);
 
